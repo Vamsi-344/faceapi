@@ -1,0 +1,13 @@
+easydict==1.13
+fastapi==0.110.1
+numpy==1.26.4
+opencv_python_headless==4.9.0.80
+Pillow==10.3.0
+pymilvus==2.4.0
+tensorboardX==2.6.2.2
+tensorboardX==2.6.2.2
+torch==2.2.2
+torchvision==0.17.2
+tqdm==4.66.2
+uvicorn==0.29.0
+python-multipart==0.0.9
