@@ -309,16 +309,17 @@ def load_weights(mdl, name):
     """
     if name == 'vggface2':
         path = 'https://github.com/timesler/facenet-pytorch/releases/download/v2.2.9/20180402-114759-vggface2.pt'
+        cached_file = 'pretrained_models/20180402-114759-vggface2.pt'
     elif name == 'casia-webface':
         path = 'https://github.com/timesler/facenet-pytorch/releases/download/v2.2.9/20180408-102900-casia-webface.pt'
+        cached_file = 'pretrained_models/20180408-102900-casia-webface.pt'
     else:
         raise ValueError('Pretrained models only exist for "vggface2" and "casia-webface"')
 
-    cached_file = 'facenet_pytorch_models/20180402-114759-vggface2.pt'
     # cached_file = os.path.join(model_dir, os.path.basename(path))
     try:
         state_dict = torch.load(cached_file)
         mdl.load_state_dict(state_dict)
-        print("Successfully loaded the model")
+        # print("Successfully loaded the model")
     except Exception as e:
         print(f"Failed to load the model with {e}")
