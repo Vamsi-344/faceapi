@@ -250,7 +250,7 @@ async def do_recognize(img_info: dict = Depends(do_feature_extract)):
         return {"response": "Can't perform registration due to feature extraction result: "+ img_info["response"]}
     else:
         search_params = {"metric_type": "COSINE", "params": {"radius": 0.7, "range_filter": 1.1}}
-        res = client.search(collection_name="faces", data=[img_info["response"]], limit=1, output_fields=["name"], search_params=search_params)
+        res = client.search(collection_name="faces", data=[img_info["response"]], limit=1, output_fields=["username", "realm"], search_params=search_params)
         if res[0]==[]:
             return {"message": "Face not recognized", "results": "Unknown"} 
         return {"message": "Face recognized", "results": res}
