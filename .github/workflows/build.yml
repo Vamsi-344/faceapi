@@ -26,6 +26,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
+        context: .
         push: true
         tags: sethukrishna344/faceapi:latest
         platforms: linux/amd64, linux/arm64
