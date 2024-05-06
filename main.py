@@ -256,19 +256,22 @@ async def do_recognize(img_info: dict = Depends(do_feature_extract)):
         return {"message": "Face recognized", "results": res}
     
 @app.post("/register")
-async def do_register(img_info: dict = Depends(do_feature_extract), id: str = None):
+async def do_register(img_info: dict = Depends(do_feature_extract), username: str = None, realm: str = None):
     # employee_id: int = None
     if type(img_info["response"])==str:
         return {"response": "Can't perform recognition due to feature extraction result: "+ img_info["response"]}
     else:
         # if employee_id is None:
         #     return {"response": "Employee Id shouldn't be None"}
-        if id is None:
-            return {"response": "ID shouldn't be None"}
+        if username is None:
+            return {"response": "username shouldn't be None"}
+        elif realm is None:
+            return {"response": "realm shouldn't be None"}
         else:
             try:
+                id = username+"_"+realm
                 # data = [{"id": employee_id, "vector": img_info["response"], "name": name}]
-                data = [{"vector": img_info["response"], "id": id}]
+                data = [{"id": id, "vector": img_info["response"], "username": username, "userrealm": realm}]
                 res = client.upsert(collection_name="faces", data=data)
                 return {"message": "Face registered successfully"}
             except Exception as e:
@@ -277,18 +280,19 @@ async def do_register(img_info: dict = Depends(do_feature_extract), id: str = No
 
 @app.get("/get_data")
 async def get_data():
-    res = client.query(collection_name="faces", filter="id like '%'", output_fields=["name"])
+    res = client.query(collection_name="faces", filter="id like '%'", output_fields=["username", "realm"])
     return {"results": res}
 
 @app.get("/get_face/")
-async def get_face(id: str):
-    res = client.get(collection_name="faces", ids=[id], output_fields=["name"])
+async def get_face(username: str):
+    res = client.query(collection_name="faces", filter=f"id like '{username}_%'", output_fields=["username", "realm"])
+    # res = client.get(collection_name="faces", ids=[id], output_fields=["username"])
     return {"response": "Face found on database", "result": res}
 
 @app.delete("/delete_face/")
 async def delete_face(id: str):
     res = client.delete(collection_name="faces", ids=[id])
-    return {"response": "Face deleted from database", "name": id}
+    return {"response": "Face deleted from database", "id": id}
 
 if __name__ == '__main__':
     # server api
