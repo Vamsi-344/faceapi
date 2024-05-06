@@ -271,7 +271,7 @@ async def do_register(img_info: dict = Depends(do_feature_extract), username: st
             try:
                 id = username+"_"+realm
                 # data = [{"id": employee_id, "vector": img_info["response"], "name": name}]
-                data = [{"id": id, "vector": img_info["response"], "username": username, "userrealm": realm}]
+                data = [{"id": id, "vector": img_info["response"], "username": username, "realm": realm}]
                 res = client.upsert(collection_name="faces", data=data)
                 return {"message": "Face registered successfully"}
             except Exception as e:
